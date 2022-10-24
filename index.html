@@ -100,8 +100,9 @@
                     dimension: 0,
                     pieces: [
                         {
+                            gt: 1,
                             lte: 6,
-                            color: 'green'
+                            color: 'blue'
                         },
                         {
                             gt: 6,
@@ -145,7 +146,23 @@
                                     {
                                         xAxis: '10:00'
                                     }
-                                ],
+                                ]
+                            ]
+                        }
+                    },
+
+                    {
+                        name: 'name2',
+                        type: 'line',
+                        //smooth: true,
+                        // prettier-ignore
+                        data: [200, 180, 50, 160, 170, 200, 650, 600, 450, 390, 180, 290, 420, 550, 550, 650, 890, 500, 800, 300],
+                          markArea: {
+                            itemStyle: {
+                                color: 'rgba(55, 183, 155, 0.4)'
+                            },
+                            data: [
+                                
                                 [
                                     {
                                         name: 'Evening Peak',
@@ -157,14 +174,7 @@
                                 ]
                             ]
                         }
-                    },
-
-                    {
-                        name: 'name2',
-                        type: 'line',
-                        //smooth: true,
-                        // prettier-ignore
-                        data: [200, 180, 50, 160, 170, 200, 650, 600, 450, 390, 180, 290, 420, 550, 550, 650, 890, 500, 800, 300]
+                        
                     }
 
                 ]
