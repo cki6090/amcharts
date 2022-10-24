@@ -1,232 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    
-    <title>Document</title>
+    <meta charset="utf-8">
+    <title>Distribution of Electricity - Apache ECharts Demo</title>
 </head>
+
 <body>
     <style>
-        #chartdiv {
-            width: 100%;
-            height: 500px;
+        * {
+        margin: 0;
+        padding: 0;
+        }
+        #chart-container {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
         }
     </style>
-    <div id="chartdiv"></div>
+    <div id="chart-container"></div>
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
     <script>
-        /**
-     * ---------------------------------------
-     * This demo was created using amCharts 5.
-     * 
-     * For more information visit:
-     * https://www.amcharts.com/
-     * 
-     * Documentation is available at:
-     * https://www.amcharts.com/docs/v5/
-     * ---------------------------------------
-     */
-
-            // Create root element
-            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-            var root = am5.Root.new("chartdiv");
-
-            // Set themes
-            // https://www.amcharts.com/docs/v5/concepts/themes/
-            root.setThemes([
-                am5themes_Animated.new(root)
-            ]);
-
-            // Create chart
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/
-            var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                panX: true,
-                panY: true,
-                wheelX: "panX",
-                wheelY: "zoomX",
-                layout: root.verticalLayout,
-                pinchZoomX: true
-            }));
-
-            // Add cursor
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-            var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-                behavior: "none"
-            }));
-            cursor.lineY.set("visible", false);
-
-            var colorSet = am5.ColorSet.new(root, {});
-
-            // The data
-            var data = [
-                {
-                    year: "2014",
-                    value: 23.5,
-                    strokeSettings: {
-                        stroke: colorSet.getIndex(0)
-                    },
-                    fillSettings: {
-                        fill: colorSet.getIndex(0),
-                    },
-                    bulletSettings: {
-                        fill: colorSet.getIndex(0)
-                    }
-                },
-                {
-                    year: "2015",
-                    value: 26,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(0)
-                    }
-                },
-                {
-                    year: "2016",
-                    value: 30,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(0)
-                    }
-                },
-                {
-                    year: "2017",
-                    value: 20,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(0)
-                    }
-                },
-                {
-                    year: "2018",
-                    value: 30,
-                    strokeSettings: {
-                        stroke: colorSet.getIndex(3)
-                    },
-                    fillSettings: {
-                        fill: colorSet.getIndex(3),
-                    },
-                    bulletSettings: {
-                        fill: colorSet.getIndex(3)
-                    }
-                },
-                {
-                    year: "2019",
-                    value: 30,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(3)
-                    }
-                },
-                {
-                    year: "2020",
-                    value: 31,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(3)
-                    }
-                },
-                {
-                    year: "2021",
-                    value: 34,
-                    strokeSettings: {
-                        stroke: colorSet.getIndex(6)
-                    },
-                    fillSettings: {
-                        fill: colorSet.getIndex(6),
-                    },
-                    bulletSettings: {
-                        fill: colorSet.getIndex(6)
-                    }
-                },
-                {
-                    year: "2022",
-                    value: 33,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(6)
-                    }
-                },
-                {
-                    year: "2023",
-                    value: 34,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(6)
-                    }
-                },
-                {
-                    year: "2024",
-                    value: 36,
-                    bulletSettings: {
-                        fill: colorSet.getIndex(6)
-                    }
-                }
-            ];
-
-            // Create axes
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-            var xRenderer = am5xy.AxisRendererX.new(root, {});
-            xRenderer.grid.template.set("location", 0.5);
-            xRenderer.labels.template.setAll({
-                location: 0.5,
-                multiLocation: 0.5
+        var dom = document.getElementById('chart-container');
+            var myChart = echarts.init(dom, null, {
+                renderer: 'canvas',
+                useDirtyRect: false
             });
+            var app = {};
 
-            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                categoryField: "year",
-                renderer: xRenderer,
-                tooltip: am5.Tooltip.new(root, {})
-            }));
+            var option;
 
-            xAxis.data.setAll(data);
+            option = {
+                title: {
+                    text: '대 제목',
+                    subtext: '소 제목',
+                    left: "center",
+                    //top: "center"
+                },
 
-            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                maxPrecision: 0,
-                renderer: am5xy.AxisRendererY.new(root, {})
-            }));
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross'
+                    }
+                },
 
-            var series = chart.series.push(am5xy.LineSeries.new(root, {
-                xAxis: xAxis,
-                yAxis: yAxis,
-                valueYField: "value",
-                categoryXField: "year",
-                tooltip: am5.Tooltip.new(root, {
-                    labelText: "{valueY}",
-                    dy: -5
-                })
-            }));
+                toolbox: {
+                    show: true,
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
 
-            series.strokes.template.setAll({
-                templateField: "strokeSettings",
-                strokeWidth: 2
-            });
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    // prettier-ignore
+                    data: ['00:00', '01:15', '02:30', '03:45', '05:00', '06:15', '07:30', '08:45', '10:00', '11:15', '12:30', '13:45', '15:00', '16:15', '17:30', '18:45', '20:00', '21:15', '22:30', '23:45']
+                },
 
-            series.fills.template.setAll({
-                visible: true,
-                fillOpacity: 0.5,
-                templateField: "fillSettings"
-            });
+                yAxis: {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} W'
+                    },
+                    axisPointer: {
+                        snap: true
+                    }
+                },
 
 
-            series.bullets.push(function () {
-                return am5.Bullet.new(root, {
-                    sprite: am5.Circle.new(root, {
-                        templateField: "bulletSettings",
-                        radius: 5
-                    })
-                });
-            });
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        xAxisIndex: 0,
+                        filterMode: 'none'
+                    },
+                    {
+                        type: 'slider',
+                        yAxisIndex: 0,
+                        filterMode: 'none'
+                    },
+                    {
+                        type: 'inside',
+                        xAxisIndex: 0,
+                        filterMode: 'none'
+                    },
+                    {
+                        type: 'inside',
+                        yAxisIndex: 0,
+                        filterMode: 'none'
+                    }
+                ],
+                
 
-            series.data.setAll(data);
-            series.appear(1000);
 
-            // Add scrollbar
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
-            chart.set("scrollbarX", am5.Scrollbar.new(root, {
-                orientation: "horizontal",
-                marginBottom: 20
-            }));
+                visualMap: {
+                    show: false,
+                    dimension: 0,
+                    pieces: [
+                        {
+                            lte: 6,
+                            color: 'green'
+                        },
+                        {
+                            gt: 6,
+                            lte: 8,
+                            color: 'red'
+                        },
+                        {
+                            gt: 8,
+                            lte: 14,
+                            color: 'green'
+                        },
+                        {
+                            gt: 14,
+                            lte: 17,
+                            color: 'red'
+                        },
+                        {
+                            gt: 17,
+                            color: 'green'
+                        }
+                    ]
+                },
 
-            // Make stuff animate on load
-            // https://www.amcharts.com/docs/v5/concepts/animations/
-            chart.appear(1000, 100);
+                series: [
+                    {
+                        name: 'name',
+                        type: 'line',
+                        //smooth: true,
+                        // prettier-ignore
+                        data: [300, 280, 250, 260, 270, 300, 550, 500, 400, 390, 380, 390, 400, 500, 600, 750, 800, 700, 600, 400],
+                        markArea: {
+                            itemStyle: {
+                                color: 'rgba(255, 173, 177, 0.4)'
+                            },
+                            data: [
+                                [
+                                    {
+                                        name: 'Morning Peak',
+                                        xAxis: '07:30'
+                                    },
+                                    {
+                                        xAxis: '10:00'
+                                    }
+                                ],
+                                [
+                                    {
+                                        name: 'Evening Peak',
+                                        xAxis: '17:30'
+                                    },
+                                    {
+                                        xAxis: '21:15'
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+
+                    {
+                        name: 'name2',
+                        type: 'line',
+                        //smooth: true,
+                        // prettier-ignore
+                        data: [200, 180, 50, 160, 170, 200, 650, 600, 450, 390, 180, 290, 420, 550, 550, 650, 890, 500, 800, 300]
+                    }
+
+                ]
+            };
+            
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option);
+            }
+
+            
+            window.addEventListener('resize', myChart.resize);
     </script>
 </body>
+
 </html>
