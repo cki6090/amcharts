@@ -1,172 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-
-    <title>Document</title>
+    <meta charset="utf-8">
+    <title>Stacked Area Chart - Apache ECharts Demo</title>
 </head>
+
 <body>
     <style>
-        #chartdiv {
-            width: 100%;
-            height: 500px;
+        * {
+        margin: 0;
+        padding: 0;
         }
+        #chart-container {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        }
+
     </style>
-    
-    <div id="chartdiv"></div>
+    <div id="chart-container"></div>
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <script>
-        am5.ready(function () {
-
-            // Create root element
-            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-            var root = am5.Root.new("chartdiv");
-
-            // Set themes
-            // https://www.amcharts.com/docs/v5/concepts/themes/
-            root.setThemes([
-                am5themes_Animated.new(root)
-            ]);
-
-            // Create chart
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/
-            var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                panX: true,
-                panY: true,
-                wheelX: "panX",
-                wheelY: "zoomX",
-                pinchZoomX: true
-            }));
-
-            chart.get("colors").set("step", 3);
-
-            // Add cursor
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-            var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-
-            }));
-            cursor.lineY.set("visible", false);
-
-            // Create axes
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-            var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-                maxDeviation: 0.3,
-                baseInterval: {
-                    timeUnit: "day",
-                    count: 1
+    
+        (function (root, factory) {
+            if (typeof define === 'function' && define.amd) {
+                // AMD. Register as an anonymous module.
+                define(['exports', 'echarts'], factory);
+            } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+                // CommonJS
+                factory(exports, require('echarts'));
+            } else {
+                // Browser globals
+                factory({}, root.echarts);
+            }
+        }(this, function (exports, echarts) {
+            var log = function (msg) {
+                if (typeof console !== 'undefined') {
+                    console && console.error && console.error(msg);
+                }
+            };
+            if (!echarts) {
+                log('ECharts is not Loaded');
+                return;
+            }
+            echarts.registerTheme('vintage', {
+                "color": [
+                    "#d87c7c",
+                    "#919e8b",
+                    "#d7ab82",
+                    "#6e7074",
+                    "#61a0a8",
+                    "#efa18d",
+                    "#787464",
+                    "#cc7e63",
+                    "#724e58",
+                    "#4b565b"
+                ],
+                "backgroundColor": "rgba(254,248,239,1)",
+                "textStyle": {},
+                "title": {
+                    "textStyle": {
+                        "color": "#333333"
+                    },
+                    "subtextStyle": {
+                        "color": "#aaaaaa"
+                    }
                 },
-                renderer: am5xy.AxisRendererX.new(root, {}),
-                tooltip: am5.Tooltip.new(root, {})
-            }));
-
-            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                maxDeviation: 0.3,
-                renderer: am5xy.AxisRendererY.new(root, {})
-            }));
-
-            // Add series
-            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-            var series = chart.series.push(am5xy.LineSeries.new(root, {
-                name: "Series 1",
-                xAxis: xAxis,
-                yAxis: yAxis,
-                valueYField: "value1",
-                valueXField: "date",
-                tooltip: am5.Tooltip.new(root, {
-                    labelText: "{valueX}: {valueY}\n{previousDate}: {value2}"
-                })
-            }));
-
-           
-            series.get("tooltip").get("background").set("fillOpacity", 0.5);
-
-            series.bullets.push(function () {
-                return am5.Bullet.new(root, {
-                    sprite: am5.Circle.new(root, {
-                        templateField: "bulletSettings",
-                        radius: 5
-                    })
-                });
-            });
-
-            var series2 = chart.series.push(am5xy.LineSeries.new(root, {
-                name: "Series 2",
-                xAxis: xAxis,
-                yAxis: yAxis,
-                valueYField: "value2",
-                valueXField: "date"
-            }));
-            
-            series2.strokes.template.setAll({
-                strokeDasharray: [2, 2],
-                strokeWidth: 2
-            });
-
-            // Set date fields
-            // https://www.amcharts.com/docs/v5/concepts/data/#Parsing_dates
-            root.dateFormatter.setAll({
-                dateFormat: "yyyy-MM-dd",
-                dateFields: ["valueX"]
-            });
-
-            // Set data
-            var data = [{
-                date: new Date(2019, 5, 12).getTime(),
-                value1: 50,
-                value2: 48,
-                previousDate: new Date(2019, 5, 15),
-                 bulletSettings: {
-                    fill: colorSet.getIndex(0)
+                "line": {
+                    "itemStyle": {
+                        "borderWidth": 1
+                    },
+                    "lineStyle": {
+                        "width": 2
+                    },
+                    "symbolSize": 4,
+                    "symbol": "emptyCircle",
+                    "smooth": false
                 },
+                "radar": {
+                    "itemStyle": {
+                        "borderWidth": 1
+                    },
+                    "lineStyle": {
+                        "width": 2
+                    },
+                    "symbolSize": 4,
+                    "symbol": "emptyCircle",
+                    "smooth": false
+                },
+                "bar": {
+                    "itemStyle": {
+                        "barBorderWidth": 0,
+                        "barBorderColor": "#ccc"
+                    }
+                },
+                "pie": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    }
+                },
+                "scatter": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    }
+                },
+                "boxplot": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    }
+                },
+                "parallel": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    }
+                },
+                "sankey": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    }
+                },
+                "funnel": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    }
+                },
+                "gauge": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    }
+                },
+                "candlestick": {
+                    "itemStyle": {
+                        "color": "#c23531",
+                        "color0": "#314656",
+                        "borderColor": "#c23531",
+                        "borderColor0": "#314656",
+                        "borderWidth": 1
+                    }
+                },
+                "graph": {
+                    "itemStyle": {
+                        "borderWidth": 0,
+                        "borderColor": "#ccc"
+                    },
+                    "lineStyle": {
+                        "width": 1,
+                        "color": "#aaaaaa"
+                    },
+                    "symbolSize": 4,
+                    "symbol": "emptyCircle",
+                    "smooth": false,
+                    "color": [
+                        "#d87c7c",
+                        "#919e8b",
+                        "#d7ab82",
+                        "#6e7074",
+                        "#61a0a8",
+                        "#efa18d",
+                        "#787464",
+                        "#cc7e63",
+                        "#724e58",
+                        "#4b565b"
+                    ],
+                    "label": {
+                        "color": "#eeeeee"
+                    }
+                },
+                "map": {
+                    "itemStyle": {
+                        "areaColor": "#eeeeee",
+                        "borderColor": "#444444",
+                        "borderWidth": 0.5
+                    },
+                    "label": {
+                        "color": "#000000"
+                    },
+                    "emphasis": {
+                        "itemStyle": {
+                            "areaColor": "rgba(255,215,0,0.8)",
+                            "borderColor": "#444444",
+                            "borderWidth": 1
+                        },
+                        "label": {
+                            "color": "rgb(100,0,0)"
+                        }
+                    }
+                },
+
+
                 
-            }, {
-                date: new Date(2019, 5, 13).getTime(),
-                value1: 53,
-                value2: 51,
-                previousDate: "2019-05-06"
-            }, {
-                date: new Date(2019, 5, 14).getTime(),
-                value1: 56,
-                value2: 58,
-                previousDate: "2019-05-07"
-            }, {
-                date: new Date(2019, 5, 15).getTime(),
-                value1: 52,
-                value2: 53,
-                previousDate: "2019-05-08"
-            }, {
-                date: new Date(2019, 5, 16).getTime(),
-                value1: 48,
-                value2: 44,
-                previousDate: "2019-05-09"
-            }, {
-                date: new Date(2019, 5, 17).getTime(),
-                value1: 47,
-                value2: 42,
-                previousDate: "2019-05-10"
-            }, {
-                date: new Date(2019, 5, 18).getTime(),
-                value1: 59,
-                value2: 55,
-                previousDate: "2019-05-11"
-            }]
-
-            series.data.setAll(data);
-            series2.data.setAll(data);
+                "geo": {
+                    "itemStyle": {
+                        "areaColor": "#eeeeee",
+                        "borderColor": "#444444",
+                        "borderWidth": 0.5
+                    },
+                    "label": {
+                        "color": "#000000"
+                    },
+                    "emphasis": {
+                        "itemStyle": {
+                            "areaColor": "rgba(255,215,0,0.8)",
+                            "borderColor": "#444444",
+                            "borderWidth": 1
+                        },
+                        "label": {
+                            "color": "rgb(100,0,0)"
+                        }
+                    }
+                },
 
 
-            // Make stuff animate on load
-            // https://www.amcharts.com/docs/v5/concepts/animations/
-            series.appear(1000);
-            series2.appear(1000);
-            chart.appear(1000, 100);
+                
+                "categoryAxis": {
+                    "axisLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisTick": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisLabel": {
+                        "show": true,
+                        "color": "#333"
+                    },
+                    "splitLine": {
+                        "show": false,
+                        "lineStyle": {
+                            "color": [
+                                "#ccc"
+                            ]
+                        }
+                    },
+                    "splitArea": {
+                        "show": false,
+                        "areaStyle": {
+                            "color": [
+                                "rgba(250,250,250,0.3)",
+                                "rgba(200,200,200,0.3)"
+                            ]
+                        }
+                    }
+                },
 
-        }); // end am5.ready()
+
+
+
+                "valueAxis": {
+                    "axisLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisTick": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisLabel": {
+                        "show": true,
+                        "color": "#333"
+                    },
+                    "splitLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": [
+                                "#ccc"
+                            ]
+                        }
+                    },
+                    "splitArea": {
+                        "show": false,
+                        "areaStyle": {
+                            "color": [
+                                "rgba(250,250,250,0.3)",
+                                "rgba(200,200,200,0.3)"
+                            ]
+                        }
+                    }
+                },
+
+
+
+                "logAxis": {
+                    "axisLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisTick": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisLabel": {
+                        "show": true,
+                        "color": "#333"
+                    },
+                    "splitLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": [
+                                "#ccc"
+                            ]
+                        }
+                    },
+                    "splitArea": {
+                        "show": false,
+                        "areaStyle": {
+                            "color": [
+                                "rgba(250,250,250,0.3)",
+                                "rgba(200,200,200,0.3)"
+                            ]
+                        }
+                    }
+                },
+
+
+
+                "timeAxis": {
+                    "axisLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisTick": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": "#333"
+                        }
+                    },
+                    "axisLabel": {
+                        "show": true,
+                        "color": "#333"
+                    },
+                    "splitLine": {
+                        "show": true,
+                        "lineStyle": {
+                            "color": [
+                                "#ccc"
+                            ]
+                        }
+                    },
+                    "splitArea": {
+                        "show": false,
+                        "areaStyle": {
+                            "color": [
+                                "rgba(250,250,250,0.3)",
+                                "rgba(200,200,200,0.3)"
+                            ]
+                        }
+                    }
+                },
+
+
+
+                "toolbox": {
+                    "iconStyle": {
+                        "borderColor": "#999999"
+                    },
+                    "emphasis": {
+                        "iconStyle": {
+                            "borderColor": "#666666"
+                        }
+                    }
+                },
+
+
+
+                "legend": {
+                    "textStyle": {
+                        "color": "#333333"
+                    }
+                },
+
+
+
+                "tooltip": {
+                    "axisPointer": {
+                        "lineStyle": {
+                            "color": "#cccccc",
+                            "width": 1
+                        },
+                        "crossStyle": {
+                            "color": "#cccccc",
+                            "width": 1
+                        }
+                    }
+                },
+
+
+
+                "timeline": {
+                    "lineStyle": {
+                        "color": "#293c55",
+                        "width": 1
+                    },
+                    
+                    "itemStyle": {
+                        "color": "#293c55",
+                        "borderWidth": 1
+                    },
+                    "controlStyle": {
+                        "color": "#293c55",
+                        "borderColor": "#293c55",
+                        "borderWidth": 0.5
+                    },
+                    "checkpointStyle": {
+                        "color": "#e43c59",
+                        "borderColor": "#c23531"
+                    },
+                    "label": {
+                        "color": "#293c55"
+                    },
+                    "emphasis": {
+                        "itemStyle": {
+                            "color": "#a9334c"
+                        },
+                        "controlStyle": {
+                            "color": "#293c55",
+                            "borderColor": "#293c55",
+                            "borderWidth": 0.5
+                        },
+                        "label": {
+                            "color": "#293c55"
+                        }
+                    }
+                },
+
+
+                "visualMap": {
+                    "color": [
+                        "#bf444c",
+                        "#d88273",
+                        "#f6efa6"
+                    ]
+                },
+
+
+                "dataZoom": {
+                    "backgroundColor": "rgba(47,69,84,0)",
+                    "dataBackgroundColor": "rgba(47,69,84,0.3)",
+                    "fillerColor": "rgba(167,183,204,0.4)",
+                    "handleColor": "#a7b7cc",
+                    "handleSize": "100%",
+                    "textStyle": {
+                        "color": "#333333"
+                    }
+                },
+
+
+
+                "markPoint": {
+                    "label": {
+                        "color": "#eeeeee"
+                    },
+                    "emphasis": {
+                        "label": {
+                            "color": "#eeeeee"
+                        }
+                    }
+                }
+
+
+            });
+        }));
+
     </script>
 </body>
+
 </html>

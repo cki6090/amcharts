@@ -8,17 +8,16 @@
 
 <body>
     <style>
-        * {
-        margin: 0;
-        padding: 0;
-        }
-        #chart-container {
-        position: relative;
-        height: 100vh;
-        overflow: hidden;
-        }
+    *{margin: 0;padding: 0;}
+    .cc_w{ display: flex;align-items: center;justify-content: center; width: 100vw; height: 100vh;}
+    #chart-container {width: 80%; height: 80%; }
     </style>
-    <div id="chart-container"></div>
+
+   <div class="cc_w"> 
+        <div id="chart-container">
+   </div>
+
+
     <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
     <script>
         var dom = document.getElementById('chart-container');
@@ -26,125 +25,190 @@
                 renderer: 'canvas',
                 useDirtyRect: false
             });
-            var app = {};
-
+            
             var option;
-
             option = {
+
                 title: {
-                    text: '대 제목',
-                    subtext: '소 제목',
-                    left: "center",
+                    text: 'cyberlogtec',
+                    //subtext: 'EUT',
+                    left: "legt",
                     //top: "center"
                 },
 
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
-                        type: 'cross'
+                        type: 'cross',
+                        animation: false,
+                        label: {
+                            backgroundColor: '#BD0F72',
+                            color: '#FFFFFF',
+                            borderColor: '#aaa'
+                        },
+
+                        lineStyle: {
+                            color: '#BD0F72',
+                            width: 2,
+                            opacity: 1
+                        }
+
                     }
                 },
 
-                toolbox: {
+                toolbox: { 
                     show: true,
                     feature: {
+                        dataZoom: {
+                            yAxisIndex: 'none'
+                        },
+                        dataView: { readOnly: false },
+                        magicType: { type: ['line', 'bar'] },
+                        restore: {},
                         saveAsImage: {}
                     }
+                },
+
+                legend: {
+                    data: ['Return', 'Supply' ,'Setpoint']
+                },
+
+                grid: {
+                    left: '1%',
+                    right: '1%',
+                    top: '10%',
+                    bottom: '1%',
+                    containLabel: true
                 },
 
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    // prettier-ignore
-                    data: ['00:00', '01:15', '02:30', '03:45', '05:00', '06:15', '07:30', '08:45', '10:00', '11:15', '12:30', '13:45', '15:00', '16:15', '17:30', '18:45', '20:00', '21:15', '22:30', '23:45']
+                    axisLine: { onZero: false },
+                    //prettier-ignore
+                    data: ['8/1', '8/2', '8/3', '8/4', '8/5', '8/6', '8/7', '8/8', '8/9', '8/10', '8/11', '8/12', '8/13', '8/14', '8/15', '8/16', '8/17', '8/18', '8/19', '8/20', '8/21']
                 },
 
                 yAxis: {
                     type: 'value',
                     axisLabel: {
-                        formatter: '{value} W'
+                        formatter: '{value} °C'
                     },
-                    axisPointer: {
-                        snap: true
-                    }
+                    max: 10,
+                    min: -10,
                 },
-
 
                 dataZoom: [
                     {
-                        type: 'slider',
-                        xAxisIndex: 0,
-                        filterMode: 'none'
-                    },
-                    {
-                        type: 'slider',
-                        yAxisIndex: 0,
-                        filterMode: 'none'
-                    },
-                    {
                         type: 'inside',
+                        //inside 바생성
                         xAxisIndex: 0,
                         filterMode: 'none'
                     },
                     {
                         type: 'inside',
+                        //inside 바생성
                         yAxisIndex: 0,
                         filterMode: 'none'
                     }
                 ],
-                
-
-
-                visualMap: {
-                    show: false,
-                    dimension: 0,
-                    pieces: [
-                        {
-                            gt: 1,
-                            lte: 6,
-                            color: 'blue'
-                        },
-                        {
-                            gt: 6,
-                            lte: 8,
-                            color: 'red'
-                        },
-                        {
-                            gt: 8,
-                            lte: 14,
-                            color: 'green'
-                        },
-                        {
-                            gt: 14,
-                            lte: 17,
-                            color: 'red'
-                        },
-                        {
-                            gt: 17,
-                            color: 'green'
-                        }
-                    ]
-                },
 
                 series: [
                     {
-                        name: 'name',
+                        name: 'Return',
                         type: 'line',
-                        //smooth: true,
-                        // prettier-ignore
-                        data: [300, 280, 250, 260, 270, 300, 550, 500, 400, 390, 380, 390, 400, 500, 600, 750, 800, 700, 600, 400],
+                        //areaStyle: {},
+                        symbol: 'circle',
+                        showSymbol: false,
+                        symbolSize: 5,
+                        emphasis: {
+                            focus: 'series'
+                        },
+
+                        ymbolSize: 1,
+                        data: [6, 0, 1, 5, 1, 0, 4, -1, 1, 0, 6, 1, 1, -1, 1, 0],
+                        markPoint: {
+                            data: [{ name: 'T1', value: 'T1', xAxis: 3, yAxis: 5 }, { name: 'T2', value: 'T2', xAxis: 6, yAxis: 4 }, { name: 'T3', value: 'T3', xAxis: 10, yAxis: 6 }]
+                        },
+                        lineStyle: {
+                            color: '#BD0F72',
+                            width: 2,
+                        },
+                         itemStyle: {
+                            color: '#BD0F72'
+                        }
+                    },
+
+                    {
+                        name: 'Supply',
+                        type: 'line',
+                        //areaStyle: {},
+                        symbol: 'triangle',
+                        showSymbol: false,
+                        symbolSize: 5,
+                        emphasis: {
+                            focus: 'series'
+                        },
+
+                        ymbolSize: 0,
+                        data: [4, -2, -0, 3, 2, 1, 1, -2, 2, 0, 3, 0, 2, -3, 2, -1],
+                        markPoint: {
+                            data: [{ name: 'T2', value: 'T2', xAxis: 13, yAxis: -3,}]
+                        },
+                        lineStyle: {
+                            color: '#727272',
+                            width: 2,
+                        },
+                        itemStyle: {
+                            color: '#727272'
+                        }
+                    },
+
+
+
+                    {
+                        name: 'Setpoint',
+                        type: 'line',
+                        //areaStyle: {},
+                        symbol: 'square',
+                        showSymbol: false,
+                        symbolSize: 5,
+                        emphasis: {
+                            focus: 'series'
+                        },
+
+                        ymbolSize: 0,
+                        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+                        lineStyle: {
+                            color: '#111827',
+                            width: 3,
+                            //shadowColor: 'rgba(0,0,0,1)',
+                            //shadowBlur: 10,
+                            //shadowOffsetY: 0
+                        },
+                        itemStyle: {
+                            color: '#111827'                                                                                                                                                                                 
+                        }
+                    },
+
+
+                    {
+                        name: 'step_1',
+                        type: 'line',
+                        data: [],
                         markArea: {
                             itemStyle: {
-                                color: 'rgba(255, 173, 177, 0.4)'
+                                color: 'rgba(189, 14, 114, 0.1)'
                             },
                             data: [
                                 [
                                     {
-                                        name: 'Morning Peak',
-                                        xAxis: '07:30'
+                                        name: 'Empty Con \nPick up',
+                                        xAxis: '8/1'
                                     },
                                     {
-                                        xAxis: '10:00'
+                                        xAxis: '8/3'
                                     }
                                 ]
                             ]
@@ -152,41 +216,147 @@
                     },
 
                     {
-                        name: 'name2',
+                        name: 'step_2',
                         type: 'line',
-                        //smooth: true,
-                        // prettier-ignore
-                        data: [200, 180, 50, 160, 170, 200, 650, 600, 450, 390, 180, 290, 420, 550, 550, 650, 890, 500, 800, 300],
-                          markArea: {
+                        data: [],
+                        markArea: {
                             itemStyle: {
-                                color: 'rgba(55, 183, 155, 0.4)'
+                                color: 'rgba(189, 14, 114, 0.2)'
                             },
                             data: [
-                                
                                 [
                                     {
-                                        name: 'Evening Peak',
-                                        xAxis: '17:30'
+                                        name: 'Cargo Gate in \nat Origin',
+                                        xAxis: '8/3'
                                     },
                                     {
-                                        xAxis: '21:15'
+                                        xAxis: '8/6'
                                     }
                                 ]
                             ]
                         }
-                        
-                    }
+                    },
 
-                ]
-            };
+                    {
+                        name: 'step_3',
+                        type: 'line',
+                        data: [],
+                        markArea: {
+                            itemStyle: {
+                                color: 'rgba(189, 14, 114, 0.3)'
+                            },
+                            data: [
+                                [
+                                    {
+                                        name: 'Load on Board \nat POL',
+                                        xAxis: '8/6'
+                                    },
+                                    {
+                                        xAxis: '8/12'
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+
+                    {
+                        name: 'step_4',
+                        type: 'line',
+                        data: [],
+                        markArea: { 
+                            itemStyle: {
+                                color: 'rgba(189, 14, 114, 0.4)'
+                            },
+                            data: [
+                                [
+                                    {
+                                        name: 'Discharge from \nVessel at POD',
+                                        xAxis: '8/12'
+                                    },
+                                    {
+                                        xAxis: '8/16'
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+
+                    {
+                        name: 'step_4',
+                        type: 'line',
+                        data: [],
+                        markArea: {
+                            itemStyle: {
+                                color: 'rgba(107, 114, 128, 0.4)'
+                            },
+                            data: [
+                                [
+                                    {
+                                        name: 'Inland Arrival \nAt Last Inland Yard',
+                                        xAxis: '8/16'
+                                    },
+                                    {
+                                        xAxis: '8/18'
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+
+                    {
+                        name: 'step_5',
+                        type: 'line',
+                        data: [],
+                        markArea: {
+                            itemStyle: {
+                               color: 'rgba(107, 114, 128, 0.4)'
+                            },
+                            data: [
+                                [
+                                    {
+                                        name: 'Pick \nDest',
+                                        xAxis: '8/18'
+                                    },
+                                    {
+                                        xAxis: '8/19'
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+
+                    {
+                        name: 'step_6',
+                        type: 'line',
+                        data: [],
+                        markArea: {
+                            itemStyle: {
+                                color: 'rgba(107, 114, 128, 0.4)'
+                            },
+                            data: [
+                                [
+                                    {
+                                        name: 'Empty \nReturn',
+                                        xAxis: '8/19'
+                                    },
+                                    {
+                                        xAxis: '8/21'
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ],
             
+            };
+
+
 
             if (option && typeof option === 'object') {
                 myChart.setOption(option);
             }
-
-            
             window.addEventListener('resize', myChart.resize);
+
     </script>
 </body>
 
