@@ -10,13 +10,12 @@
     <style>
     *{margin: 0;padding: 0;}
     .cc_w{ display: flex;align-items: center;justify-content: center; width: 100vw; height: 100vh;}
-    #chart-container {width: 80%; height: 80%; }
+    #chart-container {width: 70%; height: 75%;}
     </style>
 
    <div class="cc_w"> 
         <div id="chart-container">
    </div>
-
 
     <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
     <script>
@@ -38,13 +37,14 @@
 
                 tooltip: {
                     trigger: 'axis',
+                    //formatter: '20221102  <br/>{b} km <br/> {c}  °C',
                     axisPointer: {
                         type: 'cross',
-                        animation: false,
+                        //animation: false,
                         label: {
                             backgroundColor: '#BD0F72',
                             color: '#FFFFFF',
-                            borderColor: '#aaa'
+                           // borderColor: '#aaa'
                         },
 
                         lineStyle: {
@@ -52,7 +52,6 @@
                             width: 2,
                             opacity: 1
                         }
-
                     }
                 },
 
@@ -70,13 +69,13 @@
                 },
 
                 legend: {
-                    data: ['Return', 'Supply' ,'Setpoint']
+                    data: ['Return', 'Supply']
                 },
 
                 grid: {
                     left: '1%',
                     right: '1%',
-                    top: '10%',
+                    top: '12%',
                     bottom: '1%',
                     containLabel: true
                 },
@@ -85,17 +84,16 @@
                     type: 'category',
                     boundaryGap: false,
                     axisLine: { onZero: false },
-                    //prettier-ignore
                     data: ['8/1', '8/2', '8/3', '8/4', '8/5', '8/6', '8/7', '8/8', '8/9', '8/10', '8/11', '8/12', '8/13', '8/14', '8/15', '8/16', '8/17', '8/18', '8/19', '8/20', '8/21']
                 },
 
                 yAxis: {
                     type: 'value',
-                    axisLabel: {
-                        formatter: '{value} °C'
-                    },
+                    axisLabel: {formatter: '{value} °C'},
+                    splitLine: { show: false},
+                    axisPointer: { snap: true},
                     max: 10,
-                    min: -10,
+                    min: -4,
                 },
 
                 dataZoom: [
@@ -103,7 +101,7 @@
                         type: 'inside',
                         //inside 바생성
                         xAxisIndex: 0,
-                        filterMode: 'none'
+                        filterMode: 'none' 
                     },
                     {
                         type: 'inside',
@@ -124,15 +122,29 @@
                         emphasis: {
                             focus: 'series'
                         },
-
-                        ymbolSize: 1,
-                        data: [6, 0, 1, 5, 1, 0, 4, -1, 1, 0, 6, 1, 1, -1, 1, 0],
+                        ymbolSize: 0,
+                        data: [7, 0, 1, 6, 1, 0, 4, -1, 1, 0, 8, 1, 1, -1, 1, 0],
                         markPoint: {
-                            data: [{ name: 'T1', value: 'T1', xAxis: 3, yAxis: 5 }, { name: 'T2', value: 'T2', xAxis: 6, yAxis: 4 }, { name: 'T3', value: 'T3', xAxis: 10, yAxis: 6 }]
+                            data: [
+                                { name: 'T1', value: 'T1', xAxis: 3, yAxis: 9 }, 
+                                { name: 'T2', value: 'T2', xAxis: 6, yAxis: 9 }, 
+                                { name: 'T3', value: 'T3', xAxis: 10, yAxis: 9 }
+                            ]
                         },
+
+                        markLine: {
+                            symbol: ['none', 'none'],
+                            label: { show: false },
+                            data:[
+                                    { xAxis: 3 }, 
+                                    { xAxis: 6 }, 
+                                    { xAxis: 10 } 
+                                ]
+                        },
+
                         lineStyle: {
                             color: '#BD0F72',
-                            width: 2,
+                            width: 1.5,
                         },
                          itemStyle: {
                             color: '#BD0F72'
@@ -149,22 +161,19 @@
                         emphasis: {
                             focus: 'series'
                         },
-
                         ymbolSize: 0,
-                        data: [4, -2, -0, 3, 2, 1, 1, -2, 2, 0, 3, 0, 2, -3, 2, -1],
+                        data: [3, -2, -0, 3, 2, 1, 1, -2, 2, 0, 4, 0, 3, -3, 2, -1],
                         markPoint: {
                             data: [{ name: 'T2', value: 'T2', xAxis: 13, yAxis: -3,}]
                         },
                         lineStyle: {
                             color: '#727272',
-                            width: 2,
+                            width: 1.5,
                         },
                         itemStyle: {
                             color: '#727272'
                         }
                     },
-
-
 
                     {
                         name: 'Setpoint',
@@ -176,30 +185,29 @@
                         emphasis: {
                             focus: 'series'
                         },
-
                         ymbolSize: 0,
                         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-
                         lineStyle: {
                             color: '#111827',
-                            width: 3,
+                            width: 2,
                             //shadowColor: 'rgba(0,0,0,1)',
                             //shadowBlur: 10,
                             //shadowOffsetY: 0
                         },
                         itemStyle: {
-                            color: '#111827'                                                                                                                                                                                 
+                            color:'#111827'                          
                         }
                     },
-
-
+                    
+                    /*배경 step  나누는 부분*/
                     {
                         name: 'step_1',
                         type: 'line',
                         data: [],
                         markArea: {
                             itemStyle: {
-                                color: 'rgba(189, 14, 114, 0.1)'
+                                color: 'rgba(189, 14, 114, 0.1)',
+                                textalign: 'left'
                             },
                             data: [
                                 [
@@ -227,6 +235,7 @@
                                 [
                                     {
                                         name: 'Cargo Gate in \nat Origin',
+                                        aline:'left',
                                         xAxis: '8/3'
                                     },
                                     {
@@ -282,12 +291,12 @@
                     },
 
                     {
-                        name: 'step_4',
+                        name: 'step_5',
                         type: 'line',
                         data: [],
                         markArea: {
                             itemStyle: {
-                                color: 'rgba(107, 114, 128, 0.4)'
+                                color: 'rgba(217, 217, 217, 0.5)'
                             },
                             data: [
                                 [
@@ -304,12 +313,12 @@
                     },
 
                     {
-                        name: 'step_5',
+                        name: 'step_6',
                         type: 'line',
                         data: [],
                         markArea: {
                             itemStyle: {
-                               color: 'rgba(107, 114, 128, 0.4)'
+                               color: 'rgba(217, 217, 217, 0.5)'
                             },
                             data: [
                                 [
@@ -326,12 +335,12 @@
                     },
 
                     {
-                        name: 'step_6',
+                        name: 'step_7',
                         type: 'line',
                         data: [],
                         markArea: {
                             itemStyle: {
-                                color: 'rgba(107, 114, 128, 0.4)'
+                                color: 'rgba(217, 217, 217, 0.5)'
                             },
                             data: [
                                 [
@@ -345,9 +354,30 @@
                                 ]
                             ]
                         }
+                    },
+                    //안전 구간 부분
+                    {
+                        name: 'step_8',
+                        type: 'line',
+                        data: [],
+                        markArea: {
+                            itemStyle: {
+                                color: 'rgba(189, 14, 114, 0.1)'
+                            },
+                            data: [
+                                [
+                                    {
+                                        yAxis: '2'
+                                    },
+                                    {
+                                        yAxis: '-2'
+                                    }
+                                ]
+                            ]
+                        }
                     }
+
                 ],
-            
             };
 
 
