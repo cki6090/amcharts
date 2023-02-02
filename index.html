@@ -8,28 +8,42 @@
 
 <body>
     <style>
-    *{margin: 0;padding: 0;}
-    .cc_w{ display: flex;align-items: center;justify-content: center; width: 100vw; height: 100vh;}
-    #chart-container {width: 70%; height: 75%;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .cc_w {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #chart-container {
+            width: 70%;
+            height: 75%;
+        }
     </style>
 
-   <div class="cc_w"> 
+    <div class="cc_w">
         <div id="chart-container">
-   </div>
+        </div>
 
-    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
-    <script>
-        var dom = document.getElementById('chart-container');
+        <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+        <script>
+            var dom = document.getElementById('chart-container');
             var myChart = echarts.init(dom, null, {
                 renderer: 'canvas',
                 useDirtyRect: false
             });
-            
+
             var option;
             option = {
 
                 title: {
-                    text: 'cyberlogtec',
+                    text: 'amchart',
                     //subtext: 'EUT',
                     left: "legt",
                     //top: "center"
@@ -44,7 +58,7 @@
                         label: {
                             backgroundColor: '#BD0F72',
                             color: '#FFFFFF',
-                           // borderColor: '#aaa'
+                            // borderColor: '#aaa'
                         },
 
                         lineStyle: {
@@ -55,7 +69,7 @@
                     }
                 },
 
-                toolbox: { 
+                toolbox: {
                     show: true,
                     feature: {
                         dataZoom: {
@@ -89,9 +103,9 @@
 
                 yAxis: {
                     type: 'value',
-                    axisLabel: {formatter: '{value} °C'},
-                    splitLine: { show: false},
-                    axisPointer: { snap: true},
+                    axisLabel: { formatter: '{value} °C' },
+                    splitLine: { show: false },
+                    axisPointer: { snap: true },
                     max: 10,
                     min: -4,
                 },
@@ -101,7 +115,7 @@
                         type: 'inside',
                         //inside 바생성
                         xAxisIndex: 0,
-                        filterMode: 'none' 
+                        filterMode: 'none'
                     },
                     {
                         type: 'inside',
@@ -126,8 +140,8 @@
                         data: [7, 0, 1, 6, 1, 0, 4, -1, 1, 0, 8, 1, 1, -1, 1, 0],
                         markPoint: {
                             data: [
-                                { name: 'T1', value: 'T1', xAxis: 3, yAxis: 9 }, 
-                                { name: 'T2', value: 'T2', xAxis: 6, yAxis: 9 }, 
+                                { name: 'T1', value: 'T1', xAxis: 3, yAxis: 9 },
+                                { name: 'T2', value: 'T2', xAxis: 6, yAxis: 9 },
                                 { name: 'T3', value: 'T3', xAxis: 10, yAxis: 9 }
                             ]
                         },
@@ -135,18 +149,18 @@
                         markLine: {
                             symbol: ['none', 'none'],
                             label: { show: false },
-                            data:[
-                                    { xAxis: 3 }, 
-                                    { xAxis: 6 }, 
-                                    { xAxis: 10 } 
-                                ]
+                            data: [
+                                { xAxis: 3 },
+                                { xAxis: 6 },
+                                { xAxis: 10 }
+                            ]
                         },
 
                         lineStyle: {
                             color: '#BD0F72',
                             width: 1.5,
                         },
-                         itemStyle: {
+                        itemStyle: {
                             color: '#BD0F72'
                         }
                     },
@@ -164,7 +178,7 @@
                         ymbolSize: 0,
                         data: [3, -2, -0, 3, 2, 1, 1, -2, 2, 0, 4, 0, 3, -3, 2, -1],
                         markPoint: {
-                            data: [{ name: 'T2', value: 'T2', xAxis: 13, yAxis: -3,}]
+                            data: [{ name: 'T2', value: 'T2', xAxis: 13, yAxis: -3, }]
                         },
                         lineStyle: {
                             color: '#727272',
@@ -195,10 +209,10 @@
                             //shadowOffsetY: 0
                         },
                         itemStyle: {
-                            color:'#111827'                          
+                            color: '#111827'
                         }
                     },
-                    
+
                     /*배경 step  나누는 부분*/
                     {
                         name: 'step_1',
@@ -235,7 +249,7 @@
                                 [
                                     {
                                         name: 'Cargo Gate in \nat Origin',
-                                        aline:'left',
+                                        aline: 'left',
                                         xAxis: '8/3'
                                     },
                                     {
@@ -272,7 +286,7 @@
                         name: 'step_4',
                         type: 'line',
                         data: [],
-                        markArea: { 
+                        markArea: {
                             itemStyle: {
                                 color: 'rgba(189, 14, 114, 0.4)'
                             },
@@ -318,7 +332,7 @@
                         data: [],
                         markArea: {
                             itemStyle: {
-                               color: 'rgba(217, 217, 217, 0.5)'
+                                color: 'rgba(217, 217, 217, 0.5)'
                             },
                             data: [
                                 [
@@ -387,7 +401,7 @@
             }
             window.addEventListener('resize', myChart.resize);
 
-    </script>
+        </script>
 </body>
 
 </html>
